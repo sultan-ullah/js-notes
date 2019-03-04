@@ -137,6 +137,8 @@ But we have to be careful in case `0` is passed because that is coerced to false
 
 # Objects & Functions
 
+# Objects
+
 **JSON:** JavaScript object notation the major difference is we must use quotes for the property names and values, for JavaScript we do not use quotes on the names when creating an object using an object literal
 
 #### Useful Methods:
@@ -172,7 +174,8 @@ log(function() {
 ```
 #### Pass by Value or Reference
 
-In JavaScript variables are passed by **value** while objects (functions too since they are objects) are passed by **reference**
+* Variables are passed by **value**  
+* objects (functions too since they are objects) are passed by **reference**  
 
 
 
