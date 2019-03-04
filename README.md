@@ -1,6 +1,4 @@
-# JavaScript Notes
-
-## Execution Contexts & Lexical Environments
+# Execution Contexts & Lexical Environments
 
 - **Syntax Parser:** A program that reads code and determines what it does & if its grammer is valid  
 - **Lexical Environment:** Where something sits physicall in the code  
@@ -21,7 +19,7 @@ Address:
   }
 ```
 
-#### Global Execution Content
+## Global Execution Content
 
 The global execution context (created at the start of the script) contains 4 things:
 1. **Global Object:** In the case of a browser client this is the `window` object (current tab)
@@ -32,7 +30,7 @@ The global execution context (created at the start of the script) contains 4 thi
 
 Variables and functions created in the global execution context gets saved as a name value pair in the Global Object  
 
-#### Execution Context: Creation & Hoisting
+## Execution Context: Creation & Hoisting
 During the creation of an execution context for example in the global context when a script is initially run we have the Global Object (window), 'this' which is a reference to the global object, and a link to the outer environment.  
 Then we stup memory space for variables (set them to undefined) and do function hosting.  
 
@@ -85,11 +83,11 @@ a();
 * `a()` is called and its execution context is put onto the stack, it has its own copy of `myVar` and sets it to `1`
 * `b()` is called and its execution context is put onto the stack it also has its own copy of `myVar` which is then set to `undefined`
 
-#### Scope Chain
+## Scope Chain
 
 If the value referenced inside a function cannot be found within its execution context, the reference to the outer execution context will be used to grab the variable (if it has been defined there), we keep this going like a chain until we have reached the global execution context in whch case if it is still not defined it will result in an error
 
-#### Scope Chain Example
+### Scope Chain Example
 ```
 function a() {
   function b() {
@@ -109,13 +107,13 @@ If `b` was called before `myVar` is set within `a` then `myVar` would be `undefi
 
 `let`: This can be used instead of `var` but it is block scoped (if, for, while, etc.), cannot use the variable before definiton, where as you can use variables defined with `var` gets set with `undefined`
 
-### Asychronous Callbacks
+## Asychronous Callbacks
 
 The way aynchronous call backs (or events) work is the events are stored on the event queue and when the script is running JavaScript will run synchronously and then process each even tone by one by running the callback function attached to the event.
 
-## Types & Operators
+# Types & Operators
 
-### 6 Primitive Types in JavaScript
+## 6 Primitive Types in JavaScript
 
 1. Undefined: represents lack of existence (do not set a value) 
 2. Null: represents lack of existence (set a value to this)
@@ -123,6 +121,8 @@ The way aynchronous call backs (or events) work is the events are stored on the 
 4. Number: floating point number
 5. String: sequence of characters ("") and ('') can be used
 6. Symbol: new in ES6
+
+## Operator Precedence & Associativity
 
 Operators follow a strict precedence and in the case that the expression contains operators of the same precedence of even the same operator used multiple times then we use associativity which is either right to left or left to right.  
 
@@ -135,11 +135,11 @@ function greet(name) {
 ```
 But we have to be careful in case `0` is passed because that is coerced to false.
 
-## Objects & Functions
+# Objects & Functions
 
 **JSON:** JavaScript object notation the major difference is we must use quotes for the property names and values, for JavaScript we do not use quotes on the names when creating an object using an object literal
 
-### Useful Methods:
+#### Useful Methods:
 ```
 JSON.stringify(obj) // turns obj (JavaScript object) into a JSON object
 JSON.parse(jsonString) // turns a json string into valid JavaScript object
