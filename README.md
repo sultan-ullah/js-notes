@@ -21,7 +21,7 @@ Address:
   }
 ```
 
-### Global Execution Content
+#### Global Execution Content
 
 The global execution context (created at the start of the script) contains 4 things:
 1. **Global Object:** In the case of a browser client this is the `window` object (current tab)
@@ -32,7 +32,7 @@ The global execution context (created at the start of the script) contains 4 thi
 
 Variables and functions created in the global execution context gets saved as a name value pair in the Global Object  
 
-### Execution Context: Creation & Hoisting
+#### Execution Context: Creation & Hoisting
 During the creation of an execution context for example in the global context when a script is initially run we have the Global Object (window), 'this' which is a reference to the global object, and a link to the outer environment.  
 Then we stup memory space for variables (set them to undefined) and do function hosting.  
 
@@ -85,7 +85,7 @@ a();
 * `a()` is called and its execution context is put onto the stack, it has its own copy of `myVar` and sets it to `1`
 * `b()` is called and its execution context is put onto the stack it also has its own copy of `myVar` which is then set to `undefined`
 
-### Scope Chain
+#### Scope Chain
 
 If the value referenced inside a function cannot be found within its execution context, the reference to the outer execution context will be used to grab the variable (if it has been defined there), we keep this going like a chain until we have reached the global execution context in whch case if it is still not defined it will result in an error
 
@@ -137,7 +137,42 @@ But we have to be careful in case `0` is passed because that is coerced to false
 
 ## Objects & Functions
 
+**JSON:** JavaScript object notation the major difference is we must use quotes for the property names and values, for JavaScript we do not use quotes on the names when creating an object using an object literal
 
+### Useful Methods:
+```
+JSON.stringify(obj) // turns obj (JavaScript object) into a JSON object
+JSON.parse(jsonString) // turns a json string into valid JavaScript object
+```
+## Functions
+
+In JavaScript function **ARE** objects (that is what is meant by 'first class' functions), we can pass them to functions return them from functions, attach them to variables etc.
+- **Expression:** A unit of code that results in a value
+- **Function Statements**
+```
+function greet() {
+  console.log('hi');
+}
+```
+- **Function Expressions**
+```
+var greet = function() {
+  console.log('hi');
+}
+```
+- **Another use case of first class functions**
+```
+function log(a) {
+  a();
+}
+
+log(function() {
+  console.log(a)
+});
+```
+#### Pass by Value or Reference
+
+In JavaScript variables are passed by **value** while objects (functions too since they are objects) are passed by **reference**
 
 
 
