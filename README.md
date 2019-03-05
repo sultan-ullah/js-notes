@@ -139,16 +139,23 @@ But we have to be careful in case `0` is passed because that is coerced to false
 
 # Objects
 
-**JSON:** JavaScript object notation the major difference is we must use quotes for the property names and values, for JavaScript we do not use quotes on the names when creating an object using an object literal
+Objects have properties and methods and reference to them in memory  
+Dot operator does not need quotation marks but the memory access operator does
 
-#### Useful Methods:
+- **JSON:** JavaScript object notation the major difference is we must use quotes for the property names and values, for JavaScript we do not use quotes on the names when creating an object using an object literal
+
+- **Useful Methods:**  
 ```
 JSON.stringify(obj) // turns obj (JavaScript object) into a JSON object
 JSON.parse(jsonString) // turns a json string into valid JavaScript object
 ```
 ## Functions
 
-In JavaScript function **ARE** objects (that is what is meant by 'first class' functions), we can pass them to functions return them from functions, attach them to variables etc.
+In JavaScript function **ARE** objects (that is what is meant by 'first class' functions), we can pass them to other functions return them from functions, attach them to variables and everything we can do with objects we can do with functions  
+
+Functions have two main properties: a name property and a code property that can be invoked   
+More properties and even more functions can be added to a function
+
 - **Expression:** A unit of code that results in a value
 - **Function Statements**
 ```
@@ -162,7 +169,7 @@ var greet = function() {
   console.log('hi');
 }
 ```
-- **Another use case of first class functions**
+- **Creating a function as a parameter to another function**
 ```
 function log(a) {
   a();
@@ -172,10 +179,191 @@ log(function() {
   console.log(a)
 });
 ```
-#### Pass by Value or Reference
+### Pass by Value or Reference
 
 * Variables are passed by **value**  
 * objects (functions too since they are objects) are passed by **reference**  
+* Equals operator sets up a new memory space
+
+### 'this'
+
+During the creation phase a function execution context as the variable environment, a link to the outer environment and the key word `'this'` which JavaScript decides what that should be a reference too and sometimes it is not obvious.
+
+In the global context `'this'` is the global window object
+
+If a function is attached to an object, '`this`' will refer to THAT particular object, if the function does not belong to any object then `'this'` is the global object
+
+**Caveat**
+A function defined within a function that is attached to an object will have a `'this'` variable that points to the global window object NOT the object of the function that defined it
+```
+var c = {
+  name: 'The c object',
+  log: function() {
+    this.name = 'Updated c object';
+    console.log(this);
+    
+    var setname = function(newname) {
+      this.name = newname;
+    }
+    setname('Updated again! The c object')
+    console.log(this)
+  }
+}
+
+c.log()
+```
+**Output**
+```
+Object {name: "Updated c object", log: function}
+Object {name: "Updated c object", log: function}
+```
+**Explanantion**
+We basically attached a variable called `name` to the global window object when we called `setname()` because that '`this`' points to the global window object  
+
+We can save this by saving the first `'this'` to another variable which we can call inside `'setname()'`
+
+### 'arguments'
+
+Whenever an execution context is created for a function an array-like object called `arguments` is also created that holds all the parameters passed into that function
+
+### The spread operator '...'
+
+Can be used to represent the other arguments passed in without using the array-like `'arguments'`
+**Example**
+```
+function greet(firstname, lastname, language, ...other) {
+  
+}
+```
+Here `other` is an array holding all extra arguments passed the firstname, lastname and language
+
+**Immediatley Invoked Function Expressions (IIFE)
+```
+var greeting = function(name) {
+  console.log('Hello ' + name);
+}();
+
+(function(name) {
+  console.log('Goodbye');
+})("John");
+```
+By making IIFEs we can make sure that all variables defined within the function will not collide with variables defined outside of the function execution context
+
+**Closures
+```
+function greet(whattosay) {
+  return function(name) {
+    console.log(whattosay + ' ' + name;
+  }
+}
+
+var sayHi = greet('Hi');
+sayHi('Tony');
+}
+```
+**Output**
+```
+Hi Tony
+```
+
+**Explanation**
+- After calling `greet` the first time we get a function in return that will print out the `whattosay` passed in and the `name`
+- When `sayHi` is called we still have access to the `whattosay` variable due closures which keep references to variables defined within an execution context of a function that has already executed in the functions that is defined within the already executed function
+
+**Another Example**
+```
+function buildFunctions() {
+  var arr = [];
+  
+  for (var i = 0; i < 3; i++) {
+    arr.push(function() {
+      console.log(i);
+    });
+  }
+  return arr;
+}
+
+var fs = buildFunctions();
+
+fs[0]();
+fs[1]();
+fs[2]();
+```
+
+**Output**
+```
+3
+3
+3
+```
+**Explanation**
+The closure for all those functions defined `i` as 3 since that is the last value of `i`  
+
+**Solution**
+Have an IIFE defined within the loop so that each array member will be pointing to its own execution context (closure) that will hold the value that it wants
+```
+function buildFunctions2() {
+  var arr = [];
+  for (var i = 0; i < 3; i++) {
+    arr.push(
+      (function(j){
+      
+      }(i))
+    )
+  
+  }
+  return arr
+}
+```
+
+## call(), apply() & bind()
+- **bind():** called on a function and takes an object as a parameter and returns a functions where `'this'` will be a reference to the object that was passed into bind, creates a copy of the object
+- **call():** invokes the function but the first parameter will be the object that is reference by the `'this'` variable and also other parameters can be passed into after that object
+- **apply():** does the same thing as call() except it takes the parameters as an array
+
+### Using bind() to set a default parameter
+```
+function multiply(a, b) {
+  return a*b;
+}
+
+var multiplyByTwo = multiply.bind(this, 2);
+console.log(multiplyByTwo(4));
+```
+
+## The Prototype
+Every object (and function) has a prototype property which is a reference to another object, if a variable or function is called on that object and cannot be found directly attached we look at its prototype to see if it exists there this is called the **Prototype Chain**
+
+- **hasOwnProperty():** A funciton of the base object that is the prototype of all objects that can be called on an object to see if the property is actually a property of the object and not of a prototype down the prototype chain
+
+## Building Objects
+```
+function Person() {
+  this.firstname = 'John';
+  this.lastname = 'Doe';
+}
+
+var John = new Person();
+```
+The `new` keyword creates an empty object and called the function where `'this'` refers to the new empty object inside the function and as long as no other value is returned the function will return this new object to be set to a variable on the left side of the equals operator
+
+### prototype property of a Function
+Prototype of any objects created if you are using that funciton as a function constructor, you can access Function.prototype and set new values and functions that will be automatically attached to any values created by that function constructor because Function.prototype points to the prototype of all constructed objects
+
+### Pure Prototypal Inheritence
+```
+var person = {
+  firstname: 'Default',
+  lastname: 'Default',
+  greet: function() {
+    return 'Hi' + this.firstname;
+  }
+}
+
+var john = Object.create(person);
+john.firstname = "John";
+john.lastname = "Doe";
+```
 
 
 
