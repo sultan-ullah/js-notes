@@ -51,14 +51,14 @@ function b() {
 
 console.log(a);
 ```
-**Output**  
+**Output**    
 ```
 Called b!
 undefined
 Hello World!
 ```
 
-**Explanation**  
+**Explanation**    
 The reason `a` is `undefined` while `b` can be called is due to function hoisting, `a` only gets a string values during the execution stage where the code in the execution context is running line by line, not in the creation phase.  
 
 *All declared but non-initialized variables are given the value of `undefined` in the creation phase, it is good practice to not manually set `undefined` and use `null` instead to show that the variable was explicity not given a valid value.*  
@@ -80,7 +80,7 @@ function a() {
 var myVar = 1;
 a();
 ```
-**Explananation**  
+**Explananation**   
 * The global execution context is pushed onto the stack
   * functions `a` and `b` are set in memory copied entirely
   * variable `myVar` is set up with memory space but given the value of `undefined` at creation
@@ -104,7 +104,7 @@ function a() {
 var myVar = 1;
 a();
 ```
-**Explanation**
+**Explanation**  
 Since `b` is defined within `a`'s execution context it will first look for the definition of myVar within the function `a` and if it cannot find it, it wil try to check the global context, if `a` was in another function it would look there first and so on.
 
 If `b` was called before `myVar` is set within `a` then `myVar` would be `undefined` NOT `1` because thats the value given to `myVar` when the execution context of `a` finishes the creation phase  
@@ -197,7 +197,7 @@ In the global context `'this'` is the global window object
 
 If a function is attached to an object, '`this`' will refer to THAT particular object, if the function does not belong to any object then `'this'` is the global object
 
-**Caveat**
+**Caveat**  
 A function defined within a function that is attached to an object will have a `'this'` variable that points to the global window object NOT the object of the function that defined it
 ```
 var c = {
@@ -216,12 +216,12 @@ var c = {
 
 c.log()
 ```
-**Output**
+**Output**  
 ```
 Object {name: "Updated c object", log: function}
 Object {name: "Updated c object", log: function}
 ```
-**Explanantion**
+**Explanantion**  
 We basically attached a variable called `name` to the global window object when we called `setname()` because that '`this`' points to the global window object  
 
 We can save this by saving the first `'this'` to another variable which we can call inside `'setname()'`
@@ -264,14 +264,14 @@ var sayHi = greet('Hi');
 sayHi('Tony');
 }
 ```
-**Output**
+**Output**  
 ```
 Hi Tony
 ```
-**Explanation**
+**Explanation**  
 - After calling `greet` the first time we get a function in return that will print out the `whattosay` passed in and the `name`
 - When `sayHi` is called we still have access to the `whattosay` variable due closures which keep references to variables defined within an execution context of a function that has already executed in the functions that is defined within the already executed function
-**Another Example**
+**Another Example**  
 ```
 function buildFunctions() {
   var arr = [];
@@ -291,15 +291,15 @@ fs[1]();
 fs[2]();
 ```
 
-**Output**
+**Output**  
 ```
 3
 3
 3
 ```
-**Explanation**
+**Explanation**  
 The closure for all those functions defined `i` as 3 since that is the last value of `i`  
-**Solution**
+**Solution**  
 Have an IIFE defined within the loop so that each array member will be pointing to its own execution context (closure) that will hold the value that it wants
 ```
 function buildFunctions2() {
